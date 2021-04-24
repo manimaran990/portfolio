@@ -18,7 +18,7 @@
 </style>
 <script type="text/javascript">
 	//fetch goldrate
-	fetch("http://127.0.0.1:8000/getgoldrate")
+	fetch("https://myportfolioservices.herokuapp.com/getgoldrate")
 	.then(res => res.json())
 	.then(data => { 
 		if(data.success) {
@@ -34,7 +34,7 @@
 	.catch(error => console.log(error));
 
 	//fetch exchange rate
-	fetch("http://127.0.0.1:8000/getexchrate")
+	fetch("https://myportfolioservices.herokuapp.com/getexchrate")
 	.then(res => res.json())
 	.then(data => {
 		if(data.success) {
@@ -49,7 +49,7 @@
 	.catch(error => console.log(error));
 
 	//fetch mfs rate
-	fetch("http://127.0.0.1:8000/getMFchanges")
+	fetch("https://myportfolioservices.herokuapp.com/getMFchanges")
 	.then(res => res.json())
 	.then(data => {
 		if(data.success) {
@@ -69,7 +69,7 @@
 	.catch(error => console.log(error));
 
 	//fetch bitcoin rate
-	fetch("http://127.0.0.1:8000/getbtrate")
+	fetch("https://myportfolioservices.herokuapp.com/getbtrate")
 	.then(res => res.json())
 	.then(data => {
 		let node = document.getElementById("bttoday");
