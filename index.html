@@ -20,15 +20,46 @@
 	th {
 	  height: 70px;
 	}
+
+	img {
+		width: 100px;
+  		height: 100px;
+  		text-align: center;
+	}
+
+	.center {
+	  display: block;
+	  margin-left: auto;
+	  margin-right: auto;
+	}
+
 </style>
-<script type="text/javascript">
+
+<body>
+	<h4>Gold rate: </h4>
+	<div style="overflow-x:auto;" id="goldtable"></div>
+	<hr>
+	<h4>CAD currency:</h4>
+	<div style="overflow-x:auto;" id="cadtoday"></div>
+	<hr>
+	<h4>MFs:</h4>
+	<div style="overflow-x:auto;" id="mftoday"></div>
+	<hr>
+	<h4>Bitcoin:</h4>
+	<div style="overflow-x:auto;" id="bttoday"></div>
+	<hr>
+
+	<script type="text/javascript">
+	const gif_image = "https://gifimage.net/wp-content/uploads/2017/08/loading-animated-gif-1.gif";
+
 	//fetch goldrate
-	async function getgoldrate() {
+	const getgoldrate = () => {
+		let node = document.getElementById("goldtable");
+		node.innerHTML = "<img src="+gif_image+" alt='loading..' class='center'>";
 		fetch("https://myportfolioservices.herokuapp.com/getgoldrate")
 		.then(res => res.json())
 		.then(data => { 
 			if(data.success) {
-				let node = document.getElementById("goldtable");
 				node.innerHTML = "<table><tr><td>date:</td><td>"+ 
 					data.date +"</td></tr>"+
 					"<td>Today's rate</td><td>"+ data.gram_rate+"</td></tr>"+
@@ -41,12 +72,13 @@
 	}
 
 	//fetch exchange rate
-	async function getexchrate() {
+	const getexchrate = () => {
+		let node = document.getElementById("cadtoday");
+		node.innerHTML = "<img src="+gif_image+" alt='loading..' class='center'>";
 		fetch("https://myportfolioservices.herokuapp.com/getexchrate")
 		.then(res => res.json())
 		.then(data => {
 			if(data.success) {
-				let node = document.getElementById("cadtoday");
 				node.innerHTML = "<table><tr><td>date:</td><td>"+
 					data.date + "</td></tr>"+
 					"<td>cad to usd</td><td>"+ data.cad_to_usd+"</td></tr>"+
@@ -58,12 +90,13 @@
 	};
 
 	//fetch mfs rate
-	async function getmfs() {
+	const getmfs = () => {
+		let node = document.getElementById("mftoday");
+		node.innerHTML = "<img src="+gif_image+" alt='loading..' class='center'>";
 		fetch("https://myportfolioservices.herokuapp.com/getMFchanges")
 		.then(res => res.json())
 		.then(data => {
 			if(data.success) {
-				let node = document.getElementById("mftoday");
 				let key = Object.keys(data.mf_portfolio)[0]
 				node.innerHTML = "<table><tr><td>date:</td><td>"+
 					key + "</td></tr>"+
@@ -80,11 +113,12 @@
 	}
 
 	//fetch bitcoin rate
-	async function getebtrate() {
+	const getebtrate = () => {
+		let node = document.getElementById("bttoday");
+		node.innerHTML = "<img src="+gif_image+" alt='loading..' class='center'>";
 		fetch("https://myportfolioservices.herokuapp.com/getbtrate")
 		.then(res => res.json())
 		.then(data => {
-			let node = document.getElementById("bttoday");
 			node.innerHTML = "<table><tr><td>fifteen_min:</td><td>"+
 				data.bitcoin.fifteen_min + "</td></tr>"+
 				"<td>last</td><td>"+ data.bitcoin.last+"</td></tr>"+
@@ -97,18 +131,6 @@
 	myFuns.forEach( fun => fun());
 
 </script>
-<body>
-	<h4>Gold rate: </h4>
-	<div style="overflow-x:auto;" id="goldtable"></div>
-	<hr>
-	<h4>CAD currency:</h4>
-	<div style="overflow-x:auto;" id="cadtoday"></div>
-	<hr>
-	<h4>MFs:</h4>
-	<div style="overflow-x:auto;" id="mftoday"></div>
-	<hr>
-	<h4>Bitcoin:</h4>
-	<div style="overflow-x:auto;" id="bttoday"></div>
-	<hr>
+
 </body>
 </html>
