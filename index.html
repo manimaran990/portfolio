@@ -57,16 +57,8 @@
 		let node = document.getElementById("goldtable");
 		node.innerHTML = "<img src="+gif_image+" alt='loading..' class='center'>";
 		fetch("https://myportfolioservices.herokuapp.com/getgoldrate")
-		.then(res => res.json())
-		.then(data => { 
-			if(data.success) {
-				node.innerHTML = "<table><tr><td>date:</td><td>"+ 
-					data.date +"</td></tr>"+
-					"<td>Today's rate</td><td>"+ data.gram_rate+"</td></tr>"+
-					"<tr><td>per ounce</td><td>"+ data.ounce+"</td></tr>"+
-					"</table>";
-			}
-		})
+		.then(res => res.text())
+		.then(data => { node.innerHTML = data })
 		.catch(error => console.log(error));
 	}
 
