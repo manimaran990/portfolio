@@ -11,20 +11,28 @@
 
 	table, th, td {
 		table-layout: fixed;
-  		border: 0px solid black;
+  		border: 0.5px solid black;
 	}
 	table {
 	  width: 100%;
 	}
 
 	th {
-	  height: 70px;
+	  height: 50px;
 	}
 
 	img {
 		width: 100px;
   		height: 100px;
   		text-align: center;
+	}
+
+	#red {
+		background-color: red;
+	}
+
+	#green {
+		background-color: green;
 	}
 
 	.center {
@@ -36,18 +44,18 @@
 </style>
 
 <body>
-	<h4>Gold rate: </h4>
+	<button onclick="getgoldrate()"><h4>Gold rate: </h4></button>
 	<div style="overflow-x:auto;" id="goldtable"></div>
-	<hr>
-	<h4>CAD currency:</h4>
+	<br>
+	<button onclick="getexchrate()"><h4>CAD Exch rate:</h4></button>
 	<div style="overflow-x:auto;" id="cadtoday"></div>
-	<hr>
-	<h4>MFs:</h4>
+	<br>
+	<button onclick="getmfs()"><h4>MFs:</h4></button></button>
 	<div style="overflow-x:auto;" id="mftoday"></div>
-	<hr>
-	<h4>Bitcoin:</h4>
+	<br>
+	<button onclick="getebtrate()"><h4>Bitcoin:</h4></button>
 	<div style="overflow-x:auto;" id="bttoday"></div>
-	<hr>
+
 
 	<script type="text/javascript">
 	const gif_image = "https://gifimage.net/wp-content/uploads/2017/08/loading-animated-gif-1.gif";
@@ -76,6 +84,9 @@
 					"<tr><td>cad to inr</td><td>"+ data.cad_to_inr+"</td></tr>"+
 					"</table>";
 			}
+			else {
+				node.innerHTML = "error retrieving data!"
+			}
 		})
 		.catch(error => console.log(error));
 	};
@@ -88,16 +99,21 @@
 		.then(res => res.json())
 		.then(data => {
 			if(data.success) {
-				let key = Object.keys(data.mf_portfolio)[0]
-				node.innerHTML = "<table><tr><td>date:</td><td>"+
-					key + "</td></tr>"+
-					"<td>axis midcap</td><td>"+ data.mf_portfolio[key].axis_midcap+"</td></tr>"+
-					"<tr><td>axis smallcap</td><td>"+ data.mf_portfolio[key].axis_smallcap+"</td></tr>"+
-					"<tr><td>sbi_gold_fund</td><td>"+ data.mf_portfolio[key].sbi_gold_fund+"</td></tr>"+
-					"<tr><td>quant tax</td><td>"+ data.mf_portfolio[key].quant_tax+"</td></tr>"+
-					"<tr><td>nippon liquid</td><td>"+ data.mf_portfolio[key].nippon_liquid_fund+"</td></tr>"+
-					"<tr><td>mo_nasdaq_fof</td><td>"+ data.mf_portfolio[key].mo_nasdaq_fof+"</td></tr>"+
-					"</table>";
+				var fin_str = "<table><tr><th>name</th><th>curr nav</th><th>prev nav</th><th>change</th></tr>";
+				for( k of Object.keys(data.mf_portfolio)) {
+				    fin_str += "<tr><td>"+data.mf_portfolio[k].name.toUpperCase().replaceAll('_', ' ')+"</td>"+
+				    			"<td>"+data.mf_portfolio[k].current+"</td>"+
+				    			"<td>"+data.mf_portfolio[k].prev+"</td>";
+				    if(data.mf_portfolio[k].diff < 0 ) {
+						fin_str += "<td><span id='red'>"+data.mf_portfolio[k].diff+"</span></td></tr>"
+				    } else {
+				    	fin_str += "<td><span id='green'>"+data.mf_portfolio[k].diff+"</span></td></tr>"
+				    }
+				}
+				node.innerHTML = fin_str;
+			}
+			else {
+				node.innerHTML = "error retrieving data!"
 			}
 		})
 		.catch(error => console.log(error));
@@ -110,10 +126,16 @@
 		fetch("https://myportfolioservices.herokuapp.com/getbtrate")
 		.then(res => res.json())
 		.then(data => {
-			node.innerHTML = "<table><tr><td>fifteen_min:</td><td>"+
-				data.bitcoin.fifteen_min + "</td></tr>"+
-				"<td>last</td><td>"+ data.bitcoin.last+"</td></tr>"+
+			if(data.success) {
+				node.innerHTML = "<table><tr><th>BTC-USD</th><th>ETH-USD</th></tr>"+
+				"<tr><td>"+data["cyptos"]["BTC-USD"]+"</td>"+
+				"<td>"+data["cyptos"]["ETH-USD"]+"</td></tr>"+
 				"</table>";
+			}
+			else {
+				node.innerHTML = "error retrieving data!"
+			}
+			
 		})
 		.catch(error => console.log(error));
 	}
