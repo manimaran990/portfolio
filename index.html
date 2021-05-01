@@ -127,9 +127,9 @@
 		.then(res => res.json())
 		.then(data => {
 			if(data.success) {
-				node.innerHTML = "<table><tr><th>BTC-USD</th><th>ETH-USD</th></tr>"+
-				"<tr><td>"+data["cyptos"]["BTC-USD"]+"</td>"+
-				"<td>"+data["cyptos"]["ETH-USD"]+"</td></tr>"+
+				node.innerHTML = "<table><tr><th>Bitcoin</th><th>Ethereum</th></tr>"+
+				"<tr><td>"+data["cyptos"]["BTC"]+"</td>"+
+				"<td>"+data["cyptos"]["ETH"]+"</td></tr>"+
 				"</table>";
 			}
 			else {
