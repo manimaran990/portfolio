@@ -27,6 +27,12 @@
   		text-align: center;
 	}
 
+	#tokenimage {
+		width: 50px;
+  		height: 50px;
+  		text-align: center;
+	}
+
 	#red {
 		background-color: red;
 	}
@@ -127,10 +133,11 @@
 		.then(res => res.json())
 		.then(data => {
 			if(data.success) {
-				node.innerHTML = "<table><tr><th>Bitcoin</th><th>Ethereum</th></tr>"+
-				"<tr><td>"+data["cyptos"]["BTC"]+"</td>"+
-				"<td>"+data["cyptos"]["ETH"]+"</td></tr>"+
-				"</table>";
+				 var tmp_str = "<table><tr><th>Token</th><th>Current Price</th><th>high_24h</th><th>low_24h</th><th>price_change_24h</th></tr>";
+				 for(item of data.cryptos) {
+				 	tmp_str += "<tr><td style='text-align: center; verticle-align; middle;'><img id='tokenimage' src="+item["image"]+" alt="+item['name']+"></td><td>"+item["current_price"]+"</td><td>"+item["high_24h"]+"</td><td>"+item["low_24h"]+"</td><td>"+item["price_change_24h"]+"</td></tr>"
+				 }
+				 node.innerHTML = tmp_str += "</table>";
 			}
 			else {
 				node.innerHTML = "error retrieving data!"
